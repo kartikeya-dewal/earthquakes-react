@@ -9,8 +9,27 @@ const typeDefs = `
     depth: Float
   }
 
+  type Feature {
+    mag: Float
+    place: String
+    time: Float,
+    tz: Float
+    status: String
+    tsunami: Float
+    rms: Float
+    gap: Float
+    magType: String
+    type: String
+}
+
+type Earthquake {
+  geometry: Point
+  feature: Feature
+  id: ID
+}
+
   type Query {
-    getLocations: [Point]
+    earthquakes: [Earthquake]
     earthquakesInRadius(latitude:Float, longitude:Float, radius: Float): [Point]
   }
 `

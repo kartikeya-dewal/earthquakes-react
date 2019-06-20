@@ -3,14 +3,18 @@ const geoData = require('./earthquakes.json');
 const resolvers = {
   Query: {
     // get all geo locations of earthquakes
-    getLocations: () => {
-      const locations = [];
-      const earthquakes = geoData.features;
-      earthquakes.map((earthquake) => {
+    earthquakes: () => {
+      const earthquakes = [];
+      const quakes = geoData.features;
+      quakes.map((earthquake) => {
         const point = earthquake.geometry.coordinates.toString().split(',');
-        locations.push({ latitude: point[0], longitude: point[1], depth: point[2] });
+        earthquakes.push({
+          'geometry': { latitude: point[0], longitude: point[1], depth: point[2] },
+          'feature': earthquake.properties,
+          'id': earthquake.id
+        });
       });
-      return locations;
+      return earthquakes;
     },
     // find earthquakes within a radius around a geo point
     earthquakesInRadius: (root, { latitude, longitude, radius }) => {
