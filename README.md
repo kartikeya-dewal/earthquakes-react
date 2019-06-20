@@ -13,6 +13,9 @@ The server runs on port 4000.
 GraphiQL route:
 - http://localhost:4000/graphql
 
+Schema is defined in the file `data/schema.js`.
+Resolvers are define in the file `data/resolvers.js`.
+
 ### Client
 Built using `create-react-app`.
 
