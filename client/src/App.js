@@ -1,27 +1,14 @@
 import React, { Component } from 'react';
 import './App.css';
 import ApolloClient from 'apollo-boost';
-import { ApolloProvider } from 'react-apollo';
-import gql from 'graphql-tag';
-import SearchEarthquakes from './components/SearchEarthquakes/SearchEarthquakes';
-import MapContainer from './components/MapContainer/MapContainer';
+import { ApolloProvider, Query } from 'react-apollo';
+import { EARTHQUAKES_QUERY } from "./schema";
+import SearchEarthquakes from './components/SearchEarthquakes';
+import MapContainer from './components/MapContainer';
 
 const client = new ApolloClient({
   uri: "http://localhost:4000/graphql"
 });
-
-const testQuery = gql`
-{
-	earthquakesInRadius(latitude: -122.8231667, longitude: 38.807, radius: 200.0){
-    latitude
-    longitude
-  }  
-}
-`;
-
-client.query({
-  query: testQuery
-}).then((res => console.log(res)));
 
 class App extends Component {
   state = { users: [] }
@@ -39,6 +26,13 @@ class App extends Component {
             <div className="row h-100">
               <div className="col-md-3">
                 <SearchEarthquakes />
+                <Query query={EARTHQUAKES_QUERY}>{({ loading, error, data }) => {
+                  if (loading) return 'Loading...';
+                  if (error) return <p>{error.message}</p>;
+                  const { earthquakes } = data;
+                  return earthquakes.map(quake => <p key={quake.id}>{quake.feature.place}</p>)
+                }}
+                </Query>
               </div>
               <div className="col-md-9">
                 <MapContainer />

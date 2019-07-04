@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "PORT=4000 node ./bin/www",
+    "debug": "node --inspect ./bin/www",
     "eslint": "eslint"
   },
   "dependencies": {

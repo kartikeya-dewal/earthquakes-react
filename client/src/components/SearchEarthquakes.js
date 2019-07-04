@@ -1,16 +1,20 @@
 import React, { Component } from 'react';
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
 
 class SearchEarthquakes extends Component {
   constructor(props) {
     super(props);
+    let date = new Date();
+    date.setMonth(date.getMonth() - 1);
     this.state = {
       location: "",
-      minMagnitude: "",
-      maxMagnitude: "",
+      minMagnitude: 4,
+      maxMagnitude: '',
       hasTsunami: false,
-      radius: "",
-      fromDate: Date,
-      toDate: Date
+      radius: 50,
+      fromDate: date,
+      toDate: new Date()
     }
   }
 
@@ -25,7 +29,7 @@ class SearchEarthquakes extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
 
-    // TODO: Create backend methods to save created events
+    // TODO: query backend
     alert("Will be Saved in a little bit :)")
   }
 
@@ -92,7 +96,7 @@ class SearchEarthquakes extends Component {
             />
           </div>
 
-          <div className="form-group">
+          {/* <div className="form-group">
             <label>Date</label>
             <input
               type="date"
@@ -100,23 +104,31 @@ class SearchEarthquakes extends Component {
               placeholder="From date"
               name="fromDate"
               value={this.state.fromDate}
+              selected={this.state.fromDate}
               onChange={this.handleChange}
+            />
+          </div> */}
+          <div className="form-group">
+            <label>From </label>
+            <DatePicker
+              className="form-control"
+              selected={this.state.fromDate}
+              onChange={this.handleChange}
+              dateFormat='dd MMM yyyy'
             />
           </div>
 
           <div className="form-group">
-            <label>to </label>
-            <input
-              type="date"
+            <label>To </label>
+            <DatePicker
               className="form-control"
-              placeholder="To date"
-              name="toDate"
-              value={this.state.toDate}
+              selected={this.state.toDate}
               onChange={this.handleChange}
+              dateFormat='dd MMM yyyy'
             />
           </div>
 
-          <button type="submit" className="btn btn-primary">Search</button>
+          <button type="submit" onClick={this.handleSubmit} className="btn btn-primary">Search</button>
         </form>
       </div>
     );

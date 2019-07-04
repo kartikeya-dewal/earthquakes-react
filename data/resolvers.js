@@ -17,7 +17,7 @@ const resolvers = {
       return earthquakes;
     },
     // find earthquakes within a radius around a geo point
-    earthquakesInRadius: (root, { latitude, longitude, radius }) => {
+    getEarthquakesInRadius: (root, { latitude, longitude, radius }) => {
       const qaukesFound = [];
       const earthquakes = geoData.features;
       earthquakes.map((earthquake) => {
@@ -25,6 +25,26 @@ const resolvers = {
         const distance = calculateGeoDistance(latitude, longitude, point[0], point[1]);
         if (distance <= radius) {
           qaukesFound.push({ latitude: point[0], longitude: point[1], depth: point[2] })
+        }
+      });
+      return qaukesFound;
+    },
+    // find earthquakes within a radius around a geo point
+    getEarthquakesInRadiusTimespan: (root, { input }) => {
+      const qaukesFound = [];
+      const earthquakes = geoData.features;
+      earthquakes.map((earthquake) => {
+        const point = earthquake.geometry.coordinates.toString().split(',');
+        const distance = calculateGeoDistance(input.latitude, input.longitude, point[0], point[1]);
+        if (distance <= input.radius) {
+          const quakeTime = earthquake.properties.time;
+          if (quakeTime >= input.fromDate && quakeTime <= input.toDate) {
+            qaukesFound.push({
+              geometry: { latitude: point[0], longitude: point[1], depth: point[2] },
+              feature: earthquake.properties,
+              id: earthquake.id
+            });
+          }
         }
       });
       return qaukesFound;

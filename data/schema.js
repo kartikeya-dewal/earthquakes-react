@@ -7,6 +7,8 @@ const typeDefs = `
     latitude: Float
     longitude: Float
     depth: Float
+    fromDate: Float
+    toDate: Float
   }
 
   type Feature {
@@ -28,9 +30,19 @@ type Earthquake {
   id: ID
 }
 
+input PointInput {
+  latitude: Float
+  longitude: Float
+  depth: Float
+  radius: Float
+  fromDate: Float
+  toDate: Float
+}
+
   type Query {
     earthquakes: [Earthquake]
-    earthquakesInRadius(latitude:Float, longitude:Float, radius: Float): [Point]
+    getEarthquakesInRadius(latitude:Float, longitude:Float, radius: Float): [Point]
+    getEarthquakesInRadiusTimespan(input: PointInput): [Earthquake]
   }
 `
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Map, GoogleApiWrapper, InfoWindow, Marker } from 'google-maps-react';
-import { googleApiKey } from '../../config'
+import { googleApiKey } from '../config'
 
 const mapStyles = {
   width: '90%',
@@ -44,7 +44,7 @@ export class MapContainer extends Component {
       >
         <Marker
           onClick={this.onMarkerClick}
-          name={'Kenyatta International Convention Centre'}
+          name={'Melbourne'}
         />
 
         <InfoWindow
