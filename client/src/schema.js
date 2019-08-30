@@ -2,76 +2,69 @@ import gql from 'graphql-tag';
 
 export const typeDefs = `
 
-  type Point {
-    latitude: Float
-    longitude: Float
-    depth: Float
+  type Geometry {
+    type: String
+    coordinates: [Float]
   }
 
-  type Feature {
-    mag: Float
-    place: String
-    time: Float,
-    tz: Float
-    status: String
-    tsunami: Float
-    rms: Float
-    gap: Float
-    magType: String
-    type: String
+type Properties {
+  mag: Float
+  place: String
+  time: Float,
+  tz: Float
+  tsunami: Float
+  magType: String
+  type: String
 }
 
-  type Earthquake {
-    geometry: Point
-    feature: Feature
-    id: ID
-  }
+type Earthquake {
+  geometry: Geometry
+  properties: Properties
+  id: ID
+}
 
-  input PointInput {
-    latitude: Float
-    longitude: Float
-    depth: Float
-    radius: Float
-    fromDate: Float
-    toDate: Float
-  }
+input QueryInput {
+  latitude: Float
+  longitude: Float
+  minMagnitude: Float
+  maxMagnitude: Float
+  radius: Float
+  fromDate: String
+  toDate: String
+}
 
   type Query {
-    earthquakes: [Earthquake]
-    getEarthquakesInRadius(latitude:Float, longitude:Float, radius: Float): [Point]
-    getEarthquakesInRadiusTimespan(input: PointInput): [Earthquake]
+    getEarthquakes(input: QueryInput): [Earthquake]
   }
 `;
 
-export const EARTHQUAKES_QUERY = gql`
-{
-  earthquakes {
-    geometry {
-      latitude
-      longitude
-      depth
+export const GET_EARTHQUAKES = gql`
+  query getEarthquakes(
+    $fromDate: String
+    $toDate: String
+    $minMagnitude: Float
+    $maxMagnitude: Float
+    $latitude: Float
+    $longitude: Float
+    $radius: Float
+  ) {
+    earthquakes(
+      fromDate: $fromDate
+      toDate: $toDate
+      minMagnitude: $minMagnitude
+      maxMagnitude: $maxMagnitude
+      latitude: $latitude
+      longitude: $longitude
+      radius: $radius
+    ) {
+      properties {
+        mag
+        place
+      }
+      geometry {
+        coordinates
+      }
+      id
     }
-    feature {
-      place
-      mag
-    }
-    id
   }
-}
-`;
-
-export const EARTHQUAKES_IN_RADIUS_TIME_QUERY = gql`
-{
-  earthquakes {
-    geometry {
-      latitude
-      longitude
-    }
-    feature {
-      place
-      mag
-    }
-    id
-  }
-}
 `;
