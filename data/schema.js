@@ -22,7 +22,7 @@ const Properties = new GraphQLObjectType({
   fields: () => ({
     mag: { type: GraphQLFloat },
     place: { type: GraphQLString },
-    time: { type: GraphQLInt },
+    time: { type: GraphQLFloat },
     tz: { type: GraphQLInt },
     tsunami: { type: GraphQLInt }
   })
@@ -55,9 +55,6 @@ const RootQuery = new GraphQLObjectType({
       resolve(parent, args) {
         args.fromDate = moment(args.fromDate).format('YYYY-MM-DD');
         args.toDate = moment(args.toDate).format('YYYY-MM-DD');
-        console.log(
-          `${args.fromDate} ${args.toDate} ${args.minMagnitude} ${args.maxMagnitude} ${args.latitude} ${args.longitude} ${args.radius}`
-        );
         const uri = `https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=${args.fromDate}&endtime=${args.toDate}&minmagnitude=${args.minMagnitude}&maxmagnitude=${args.maxMagnitude}&latitude=${args.latitude}&longitude=${args.longitude}&maxradiuskm=${args.radius}`;
         return axios.get(uri).then(res => res.data.features);
       }

@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import logo from '../logo.png';
 import EarthquakesList from './EarthquakesList';
 import { GoogleApiWrapper } from 'google-maps-react';
 import { googleApiKey } from '../config';
 import Autocomplete from 'react-google-autocomplete';
+import event from './utils/Event';
 
 class SearchEarthquakes extends Component {
   constructor(props) {
@@ -42,6 +44,10 @@ class SearchEarthquakes extends Component {
   render() {
     return (
       <div>
+        <h2>
+          <img src={logo} alt='' className='logo' />
+          Search Earthquakes
+        </h2>
         <form onSubmit={this.onSubmit}>
           <div className='form-group'>
             <Autocomplete
@@ -52,9 +58,11 @@ class SearchEarthquakes extends Component {
                 this.setState({
                   location: {
                     latitude: place.geometry.location.lat(),
-                    longitude: place.geometry.location.lng()
+                    longitude: place.geometry.location.lng(),
+                    name: place.formatted_address
                   }
                 });
+                event.emit('placeSelected', this.state.location);
               }}
             />
           </div>
@@ -82,7 +90,7 @@ class SearchEarthquakes extends Component {
               />
             </div>
           </div>
-          <label>Radius</label>
+          <label>Radius ( km )</label>
           <div className='row'>
             <div className='form-group col-md-6'>
               <input
@@ -94,19 +102,6 @@ class SearchEarthquakes extends Component {
                 onChange={this.onChange}
               />
             </div>
-            {/* <div className='form-check col-md-6'>
-              <input
-                type='checkbox'
-                className='form-check-input'
-                placeholder='Did tsunami occur'
-                name='hasTsunami'
-                checked={this.state.hasTsunami}
-                onChange={e =>
-                  this.setState({ [e.target.name]: e.currentTarget.checked })
-                }
-              />
-              <span className='form-check-label'> Has Tsunami</span>
-            </div> */}
           </div>
           <div className='row'>
             <div className='form-group col-md-6'>
@@ -138,9 +133,24 @@ class SearchEarthquakes extends Component {
             </button>
           </div>
         </form>
-        <div>
+        <hr />
+        <ul>
           {this.state.isSubmitted && <EarthquakesList props={this.state} />}
-        </div>
+        </ul>
+        {/* <div className='card' key='1'>
+            <div className='card-body'>
+              <h5 className='card-title'>61km ENE of Namie, Japan</h5>
+              <p className='card-text'>Magnitude 6.3</p>
+            </div>
+          </div>
+          <div className='bottom-line'></div>
+          <div className='card' key='1'>
+            <div className='card-body'>
+              <h6 className='card-title'>30km ESE of Ohara, Japan</h6>
+              <p className='card-text'>Magnitude 5</p>
+            </div>
+          </div>
+          <div className='bottom-line'></div> */}
       </div>
     );
   }
