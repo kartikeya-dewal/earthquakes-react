@@ -44,10 +44,10 @@ class SearchEarthquakes extends Component {
   render() {
     return (
       <div>
-        <h2>
-          <img src={logo} alt='' className='logo' />
-          Search Earthquakes
-        </h2>
+        <h1>
+          <img src={logo} alt='Quaky Earth' className='logo' /> Quaky Earth
+        </h1>
+        <hr />
         <form onSubmit={this.onSubmit}>
           <div className='form-group'>
             <Autocomplete

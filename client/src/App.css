@@ -21,9 +21,13 @@ body {
   color: #333;
 }
 
+h1 {
+  margin-top: 0.5rem;
+}
+
 .logo {
-  width: 30px;
-  height: 30px;
+  width: 2.4rem;
+  height: 2.4rem;
 }
 .form-check {
   text-align: center;
