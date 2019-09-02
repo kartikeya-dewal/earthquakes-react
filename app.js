@@ -13,7 +13,9 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
-app.use(favicon(path.join(__dirname, 'graphql-logo.png')));
+app.use(
+  favicon(path.join(__dirname, '/public/static/media/logo.831d1b10.png'))
+);
 app.use(
   '/graphql',
   graphqlHTTP({
@@ -21,6 +23,11 @@ app.use(
     graphiql: true
   })
 );
+
+app.use(express.static(path.join(__dirname, '/public')));
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
